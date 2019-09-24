@@ -85,7 +85,6 @@ Furthermore, the following table provides specific examples of Storefront reques
 Storefront Request                            | Search Request
 --------------------------------------------- | ------------------------------------------------------
 Search results page                           | Products matching the user's query
-Autocomplete                                  | (Mixed) results matching the user's query as they type
 Home page with category summary content block | First _n_ products matching the category
 Order confirmation email with recommendations | Products similar to those in the user's order
 
@@ -172,7 +171,6 @@ The following table illustrates how the various Storefront search features use t
 Storefront Feature                                    | Use of Search Results
 ----------------------------------------------------- | ------------------------------------------------------
 Searches, categories, category summary content blocks | Init a `Storefront::ProductViewModel` from the cached product, pricing, and inventory models stored within each search result; display the results
-Autocomplete                                          | Init a `Storefront::SearchSuggestionViewModel` from each search result; display the name (and conditionally the image) for each result
 Product Recommendations                               | Pluck the MongoDB IDs from the results, and return the collection of IDs to the recommendations subsystem
 
 The table above hints at uses of search results that go beyond simply displaying results.
