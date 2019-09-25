@@ -17,6 +17,20 @@ module Workarea
         assert_equal(search_path(q: 'foo'), storefront_path_for(taxon))
       end
 
+      def test_storefront_url_for
+        taxon = Navigation::Taxon.new
+        assert_equal("http://#{Workarea.config.host}/", storefront_url_for(taxon))
+
+        taxon = create_taxon(url: 'http://example.com')
+        assert_equal('http://example.com', storefront_url_for(taxon))
+
+        taxon = Navigation::SearchResults.new(q: 'foo').taxon
+        assert_equal("http://#{Workarea.config.host}/search?q=foo", storefront_url_for(taxon))
+
+        product = create_product
+        assert_equal("http://#{Workarea.config.host}/products/#{product.slug}", storefront_url_for(product))
+      end
+
       def test_mobile_nav_return_path
         params[:return_to] = 'http://example.com/foo/bar'
         assert_equal('/foo/bar', mobile_nav_return_path)

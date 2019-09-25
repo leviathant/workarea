@@ -65,22 +65,25 @@ module Workarea
         end
       end
 
-      def storefront_path_for(taxon)
-        if taxon.url?
-          taxon.url
-        elsif taxon.root?
+      def storefront_path_for(model)
+        if !model.is_a?(Navigation::Taxon)
+          send("#{model.class.name.demodulize.downcase}_path", model.slug)
+        elsif model.url?
+          model.url
+        elsif model.root?
           respond_to?(:storefront) ? storefront.root_path : root_path
-        elsif taxon.search_results?
-          search_path(taxon.navigable.params)
-        elsif taxon.navigable?
-          send("#{taxon.resource_name}_path", taxon.navigable_slug)
+        elsif model.search_results?
+          search_path(model.navigable.params)
+        elsif model.navigable?
+          send("#{model.resource_name}_path", model.navigable_slug)
         end
       end
 
-      def storefront_url_for(taxon)
-        path = storefront_path_for(taxon)
+      def storefront_url_for(model)
+        path = storefront_path_for(model)
 
         return if path.blank?
+        return path if path.start_with?('http')
 
         protocol = Rails.application.config.force_ssl ? 'https' : 'http'
         "#{protocol}://#{Workarea.config.host}/#{path.sub(/^\//, '')}"
